@@ -218,3 +218,11 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+*.jsonl
+*.parquet
+test/adapter_test/
+test/paragrafLLM/
+test/paragrafLLM_gguf/
+test/unsloth_compiled_cache
+test/unsloth_training_checkpoints
