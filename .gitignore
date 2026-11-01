@@ -226,3 +226,6 @@ test/paragrafLLM/
 test/paragrafLLM_gguf/
 test/unsloth_compiled_cache
 test/unsloth_training_checkpoints
+*.gguf
+*.safetensor
+test/paragrafLLM_merged
