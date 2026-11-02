@@ -221,11 +221,12 @@ __marimo__/
 
 *.jsonl
 *.parquet
-test/adapter_test/
-test/paragrafLLM/
-test/paragrafLLM_gguf/
-test/unsloth_compiled_cache
-test/unsloth_training_checkpoints
+*/adapter_test/
+*/paragrafLLM/
+*/paragrafLLM_gguf/
+*/unsloth_compiled_cache
+*/unsloth_training_checkpoints
 *.gguf
 *.safetensor
-test/paragrafLLM_merged
+*/paragrafLLM_merged
+model/

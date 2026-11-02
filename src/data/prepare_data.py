@@ -4,9 +4,12 @@ from transformers import AutoTokenizer
 import re
 import html
 from sklearn.model_selection import train_test_split
+from pathlib import Path
 
 def prepare_data(dataset_name):
-    dataset = load_dataset("parquet", data_files={"train": f"{dataset_name}.parquet"}, split="train")
+    base_dir = Path(__file__).resolve().parent 
+
+    dataset = load_dataset("parquet", data_files={"train": str(base_dir / f"{dataset_name}.parquet")}, split="train")
     df = dataset.to_pandas()
 
     print("columns:")
@@ -110,9 +113,9 @@ def prepare_data(dataset_name):
 
     print(f"Train: {len(ninety_percent)}, Validation: {len(val)}, Test: {len(test)}")
 
-    ninety_percent.to_parquet("train.parquet")
-    val.to_parquet("val.parquet")
-    test.to_parquet("test.parquet")
+    ninety_percent.to_parquet(base_dir / "train.parquet")
+    val.to_parquet(base_dir / "val.parquet")
+    test.to_parquet(base_dir / "test.parquet")
 
     print("Generate jsonl files")
 
@@ -129,15 +132,15 @@ def prepare_data(dataset_name):
             for line in (to_chat(p, c, o) for p, c, o in zip(df["prompt"], df["context"], df["output"])):
                 f.write(line + "\n")
 
-    write_dataframe_to_jsonl(ninety_percent, "train.jsonl")
-    write_dataframe_to_jsonl(val, "val.jsonl")
-    write_dataframe_to_jsonl(test, "test.jsonl")
+    write_dataframe_to_jsonl(ninety_percent, str(base_dir / "train.jsonl"))
+    write_dataframe_to_jsonl(val, str(base_dir / "val.jsonl"))
+    write_dataframe_to_jsonl(test, str(base_dir / "test.jsonl"))
 
     print("TEST DATA ---------------------")
 
     tok = AutoTokenizer.from_pretrained("speakleash/Bielik-4.5B-v3.0-Instruct")
 
-    with open("val.jsonl", "r", encoding="utf-8") as f:
+    with open(str(base_dir / "val.jsonl"), "r", encoding="utf-8") as f:
         val_line = json.loads(f.readline())
         text = tok.apply_chat_template(val_line["messages"], tokenize=False)
         # print(text[:1500])    # początek: instrukcja i wyrok
