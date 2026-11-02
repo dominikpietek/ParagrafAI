@@ -17,7 +17,7 @@ def learn_model():
     dataset = load_dataset("json", data_files=str(base_dir / "data" / "train.jsonl"), split="train")
     n_train_dataset = dataset.select(range(20))
 
-    model_dir = Path(__file__).parent.parent.resolve() / "model"
+    model_dir = Path(__file__).parent.parent.parent.resolve() / "model"
     config = SFTConfig(max_seq_length=2048, output_dir=str(model_dir / "adapter_test"), learning_rate=2e-4, num_train_epochs=3, logging_steps=1)
     trainer = SFTTrainer(model=adapter, train_dataset=n_train_dataset, args=config, tokenizer=tokenizer)
     trainer = train_on_responses_only(
@@ -32,4 +32,4 @@ def learn_model():
 
     print("Saving adapter...")
 
-    adapter.save_pretrained("adapter_test")
+    adapter.save_pretrained(str(model_dir / "adapter_test"))
