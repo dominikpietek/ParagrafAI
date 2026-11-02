@@ -1,0 +1,32 @@
+services:
+  ollama:
+    image: ollama/ollama
+    volumes:
+      - C:/Users/dpietek/.ollama:/root/.ollama
+      - ./model:/model:ro
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: ./src/serving
+    ports:
+      - "8000:8000"
+    environment:
+      OLLAMA_URL: http://ollama:11434
+      MODEL_NAME: paragrafLLM
+    depends_on:
+      ollama:
+        condition: service_healthy
+
+volumes:
+  ollama_data:

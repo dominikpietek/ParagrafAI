@@ -18,7 +18,8 @@ print("Export model:")
 export_model()
 
 print("Test adapter:")
-ret2 = model_test_set(str(base_dir_data / "val.jsonl"), "adapter_test")
+adapter_dir = Path(__file__).parent.parent.resolve() / "model"
+ret2 = model_test_set(str(base_dir_data / "val.jsonl"), str(adapter_dir / "adapter_test"))
 print(f"Testy zakończone. Poprawne: {ret2.passed}, Niepoprawne: {ret2.failed}, Niepoprawny YAML: {ret2.wrong_yaml}, " +
           f"Srednia poprawność pól: {ret2.avg_percentage}")
 
