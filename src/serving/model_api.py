@@ -4,6 +4,9 @@ from pydantic import BaseModel
 from llm import generate
 from contextlib import asynccontextmanager
 import requests
+import os
+
+OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
 
 PROMPT = r"""You are extracting information from the Polish court judgments.
 Extract specified values strictly from the provided judgement. If information is not provided in the judgement, leave the field with null value.
@@ -21,7 +24,6 @@ signature: <sygnatura, string contraining the signature of the judgment>
 =====
 {context}
 ======"""
-OLLAMA_URL = "http://localhost:11434/api"
 
 @dataclass
 class Result:
@@ -34,11 +36,11 @@ class Result:
     legal_bases: list[str] = field(default=None)
 
 class InputData(BaseModel):
-    judgment: str
+    judgment: str = field(min_length=1000, max_length=14000)
 
 def is_ollama_available() -> bool:
     try:
-        response = requests.get(OLLAMA_URL + r"/tags", timeout=20)
+        response = requests.get(f"{OLLAMA_URL}/api/tags", timeout=20)
         response.raise_for_status()
     except:
         return False
