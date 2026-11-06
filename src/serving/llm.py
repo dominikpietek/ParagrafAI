@@ -1,9 +1,12 @@
 import requests
 import yaml
+import os
+
+OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
 
 def generate(messages: list[dict]) -> str:
     print("Start prompt ollama")
-    response = requests.post("http://localhost:11434/api/chat", json={
+    response = requests.post(f"{OLLAMA_URL}/api/chat", json={
         "model": "paragrafLLM",
         "messages": messages,
         "stream": False,
