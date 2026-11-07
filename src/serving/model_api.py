@@ -1,10 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from dataclasses import dataclass, field
 from pydantic import BaseModel
 from llm import generate
 from contextlib import asynccontextmanager
 import requests
 import os
+from auth import verify_api_key
 
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
 
@@ -64,7 +65,7 @@ def health():
 
     return {"status": "ok", "model_status": "ok"}
 
-@api.post("/extract")
+@api.post("/extract", dependencies=[Depends(verify_api_key)])
 def extract(judgment: InputData,) -> Result:
     inputContext = judgment.judgment
     return ask_model(inputContext)
