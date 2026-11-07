@@ -230,3 +230,5 @@ __marimo__/
 *.safetensor
 */paragrafLLM_merged
 model/
+
+*.env
