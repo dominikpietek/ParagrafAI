@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends
-from dataclasses import dataclass, field
-from pydantic import BaseModel
+from dataclasses import dataclass
+from pydantic import BaseModel, Field
 from llm import generate
 from contextlib import asynccontextmanager
 import requests
@@ -28,16 +28,16 @@ signature: <sygnatura, string contraining the signature of the judgment>
 
 @dataclass
 class Result:
-    court_name: str | None = field(default=None)
-    date: str | None = field(default=None)
-    department_name: str | None = field(default=None)
-    recorder: str | None = field(default=None)
-    signature: str | None = field(default=None)
-    judges: list[str] = field(default=None)
-    legal_bases: list[str] = field(default=None)
+    court_name: str | None = Field(default=None)
+    date: str | None = Field(default=None)
+    department_name: str | None = Field(default=None)
+    recorder: str | None = Field(default=None)
+    signature: str | None = Field(default=None)
+    judges: list[str] = Field(default=None)
+    legal_bases: list[str] = Field(default=None)
 
 class InputData(BaseModel):
-    judgment: str = field(min_length=1000, max_length=14000)
+    judgment: str = Field(min_length=1000, max_length=14000)
 
 def is_ollama_available() -> bool:
     try:
