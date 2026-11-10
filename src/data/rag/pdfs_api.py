@@ -19,7 +19,7 @@ def download_pdf(url: str, out_dir: Path) -> None:
     id_list = [x["ELI"] for x in response["items"]]
 
     for id in id_list:
-        pdf_response = requests.get(url + id + "/text.pdf", headers=HEADERS, timeout=120)
+        pdf_response = requests.get("https://api.sejm.gov.pl/eli/acts/" + id + "/text.pdf", headers=HEADERS, timeout=120)
         pdf_response.raise_for_status()
 
         out_path = out_dir / f"{id.replace('/', '_')}.pdf"
