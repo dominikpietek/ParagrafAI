@@ -232,3 +232,4 @@ __marimo__/
 model/
 
 *.env
+/src/data/rag/raw
