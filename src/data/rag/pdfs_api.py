@@ -16,7 +16,8 @@ def download_pdf(url: str, out_dir: Path) -> None:
     response.raise_for_status()
 
     response = response.json()
-    id_list = [x["ELI"] for x in response["items"]]
+    id_list = [x["ELI"] for x in response["items"] 
+               if "jednolitego tekstu" in x["title"].lower() and "kodeks pracy" in x["title"].lower()]
 
     for id in id_list:
         pdf_response = requests.get("https://api.sejm.gov.pl/eli/acts/" + id + "/text.pdf", headers=HEADERS, timeout=120)

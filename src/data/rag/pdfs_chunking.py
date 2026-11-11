@@ -14,4 +14,6 @@ if __name__ == "__main__":
     raw_dir = Path("raw")
     pdf_files = list(raw_dir.glob("*.pdf"))
     for pdf in pdf_files:
-        text_retriving_from_pdf(pdf)
+        text = text_retriving_from_pdf(pdf)
+        print("============================")
+        print(text)
