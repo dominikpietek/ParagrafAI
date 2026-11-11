@@ -233,3 +233,7 @@ model/
 
 *.env
 /src/data/rag/raw
+data/rag/raw/
+*.jsonl
+.jsonl
+chroma

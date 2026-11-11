@@ -18,10 +18,6 @@ def clear_pdf_text(text: str) -> str:
     text = re.sub(r"^\s*Poz\.\s*\d+\s*$", "", text, flags=re.MULTILINE)
     return text
 
-def chunking(text: str) -> list[str]:
-    parts = re.split(r"(^Art\.\s*\d+[a-z]?(?:\[\d+\])?\.)", text, flags=re.MULTILINE)
-    return parts
-
 def chunking(text: str, act_name: str) -> list[dict]:
     parts = re.split(r"(^Art\.\s*\d+[a-z]?(?:\[\d+\])?\.)", text, flags=re.MULTILINE)
 
@@ -32,7 +28,7 @@ def chunking(text: str, act_name: str) -> list[dict]:
 
         numer = re.search(r"\d+[a-z]?(?:\[\d+\])?", header).group()
         articles.append({
-            "id": f"{act_name}_{numer}",
+            "id": f"{act_name}_{numer}_{i}",
             "act": act_name,
             "article": numer,
             "text": f"{header} {body}",
