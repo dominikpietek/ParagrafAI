@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager
 import requests
 import os
 from auth import verify_api_key
+from rag_llm import generate_rag
 
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
 
@@ -74,3 +75,7 @@ def ask_model(message_input: str) -> Result:
     messages = {"role": "user", "content": PROMPT.replace("{context}", message_input)},
     output = generate(messages)
     return output
+
+@api.post("/ask", dependencies=[Depends(verify_api_key)])
+def ask(question: str) -> str:
+    return generate_rag(question)

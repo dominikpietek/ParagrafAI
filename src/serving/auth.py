@@ -2,6 +2,9 @@ import os
 import secrets
 from fastapi import HTTPException, Security
 from fastapi.security import APIKeyHeader
+from dotenv import load_dotenv
+
+load_dotenv("../../local.env")
 
 API_KEY = os.environ.get("PARAGRAF_API_KEY")
 
