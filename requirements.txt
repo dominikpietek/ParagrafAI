@@ -11,3 +11,4 @@ transformers
 trl
 unsloth
 chromadb
+mcp

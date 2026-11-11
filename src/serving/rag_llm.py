@@ -53,7 +53,7 @@ def prepare_prompt(text: str) -> str:
             formatted_embeddings += f"{act['act']},{act['article']}\n{act['text']}\n"
 
     if formatted_embeddings == "":
-        raise HTTPException(status_code=401, detail="Złe dane wejściowe")
+        raise HTTPException(status_code=200, detail="Złe dane wejściowe")
 
     prompt = PROMPT.replace("{QUESTION}", text)
     prompt = prompt.replace("{RAG_EMBEDDINGS}", formatted_embeddings)

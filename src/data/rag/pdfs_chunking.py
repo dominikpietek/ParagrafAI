@@ -35,7 +35,7 @@ def chunking(text: str, act_name: str) -> list[dict]:
         })
     return articles
 
-if __name__ == "__main__":
+def main_chunking():
     raw_dir = Path("raw")
     pdf_files = list(raw_dir.glob("*.pdf"))
     chunks = []
