@@ -1,6 +1,8 @@
 services:
   ollama:
     image: ollama/ollama
+    ports:
+      - "11434:11434"
     volumes:
       - C:/Users/dpietek/.ollama:/root/.ollama
       - ./model:/model:ro
@@ -21,12 +23,14 @@ services:
     build: ./src/serving
     ports:
       - "8000:8000"
+    env_file:
+      - local.env
     environment:
       OLLAMA_URL: http://ollama:11434
       MODEL_NAME: paragrafLLM
+      CHROMA_PATH: /data/chroma
+    volumes:
+      - ./data/rag/chroma:/data/chroma
     depends_on:
       ollama:
         condition: service_healthy
-
-volumes:
-  ollama_data:
