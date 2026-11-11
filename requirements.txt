@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+requests
+pyyaml
+beautifulsoup4
+pymupdf
+datasets
+scikit-learn
+torch
+transformers
+trl
+unsloth
