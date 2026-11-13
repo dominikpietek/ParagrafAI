@@ -1,31 +1,13 @@
 from fastapi import FastAPI, Depends
 from dataclasses import dataclass
 from pydantic import BaseModel, Field
-from llm import generate
+from serving.extraction import generate
 from contextlib import asynccontextmanager
 import requests
-import os
 from auth import verify_api_key
-from rag_llm import generate_rag
-
-OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
-
-PROMPT = r"""You are extracting information from the Polish court judgments.
-Extract specified values strictly from the provided judgement. If information is not provided in the judgement, leave the field with null value.
-Please return the response in the identical YAML format:
-```yaml
-court_name: "<nazwa sądu, string containing the full name of the court>"
-date: <data, date in format YYYY-MM-DD>
-department_name: "<nazwa wydziału, string containing the full name of the court's\
-\ department>"
-judges: "<sędziowie, list of judge full names>"
-legal_bases: <podstawy prawne, list of strings containing legal bases (legal regulations)>
-recorder: <protokolant, string containing the name of the recorder>
-signature: <sygnatura, string contraining the signature of the judgment>
-```
-=====
-{context}
-======"""
+from serving.rag import generate_rag
+import config
+import prompts
 
 @dataclass
 class Result:
@@ -42,7 +24,7 @@ class InputData(BaseModel):
 
 def is_ollama_available() -> bool:
     try:
-        response = requests.get(f"{OLLAMA_URL}/api/tags", timeout=20)
+        response = requests.get(f"{config.OLLAMA_URL}/api/tags", timeout=20)
         response.raise_for_status()
     except:
         return False
@@ -72,7 +54,7 @@ def extract(judgment: InputData,) -> Result:
     return ask_model(inputContext)
 
 def ask_model(message_input: str) -> Result:
-    messages = {"role": "user", "content": PROMPT.replace("{context}", message_input)},
+    messages = {"role": "user", "content": prompts.PROMPT_EXTRACTION.replace("{context}", message_input)},
     output = generate(messages)
     return output
 
