@@ -35,7 +35,7 @@ def chunking(text: str, act_name: str) -> list[dict]:
         })
     return articles
 
-def main_chunking():
+def all_pdfs_chunking():
     raw_dir = Path("raw")
     pdf_files = list(raw_dir.glob("*.pdf"))
     chunks = []
@@ -47,3 +47,6 @@ def main_chunking():
     with open("articles.jsonl", "w", encoding="utf-8") as f:
         for chunk in chunks:
             f.write(json.dumps(chunk, ensure_ascii=False) + "\n")
+
+if __name__ == "__main__":
+    all_pdfs_chunking()
