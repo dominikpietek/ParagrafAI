@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends
-from extraction import generate
+from extraction import extract_from_judgment
 from contextlib import asynccontextmanager
 import requests
 from auth import verify_api_key
@@ -38,7 +38,7 @@ def health():
 def extract(judgment: InputJudgement) -> Result:
     inputContext = judgment.judgment
     messages = [{"role": "user", "content": prompts.PROMPT_EXTRACTION.replace("{context}", inputContext)}]
-    output = generate(messages)
+    output = extract_from_judgment(messages)
     return output
 
 @api.post("/ask", dependencies=[Depends(verify_api_key)])
