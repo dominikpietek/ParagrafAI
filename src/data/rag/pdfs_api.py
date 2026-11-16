@@ -28,7 +28,7 @@ def download_pdf(url: str, out_dir: Path) -> None:
             f.write(pdf_response.content)
         print(f"Pobrano: {out_path.name}")
 
-def main():
+def download_all_pdfs():
     out_dir = Path("raw")
     out_dir.mkdir(parents=True, exist_ok=True)
     for name, url in ACTS.items():
@@ -36,4 +36,4 @@ def main():
         time.sleep(DELAY_TIME)
 
 if __name__ == "__main__":
-    main()
+    download_all_pdfs()

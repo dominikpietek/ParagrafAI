@@ -2,7 +2,7 @@ import chromadb
 import json
 from embeddings import embed
 
-def index():
+def index_chunked_pdfs():
     client = chromadb.PersistentClient(path="chroma")
     collection = client.get_or_create_collection(
         name="przepisy",
@@ -30,3 +30,6 @@ def index():
         metadatas=[{"act": a["act"], "article": a["article"]} for a in articles],
     )
     print("W bazie:", collection.count())
+
+if __name__ == "__main__":
+    index_chunked_pdfs()
